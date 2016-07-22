@@ -7,20 +7,7 @@ var templatePath = path.resolve(__dirname, '../templates/index.html');
 module.exports = function IndexRoute (keystone) {
 	return function (req, res) {
 
-		// setup tenentId
-		var Tenant = keystone.list('Tenant');
-
-		Tenant.model.findOne({
-			host: req.headers.host
-		}).exec(function(err, result) {
-			if (err) {
-			} else if (result === null) {
-				console.log('Tenant Not found');
-			} else {
-				var tenantId = result._id ? result._id : null;
-				keystone.set('tenantId', tenantId);
-			}
-		});
+		keystone.set('hostname', req.headers.host);
 
 		var lists = {};
 		_.forEach(keystone.lists, function (list, key) {
